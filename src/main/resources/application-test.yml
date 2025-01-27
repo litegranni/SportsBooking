@@ -1,0 +1,10 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/test_sports_booking # Använder en separat testdatabas
+    username: root
+    password: Norrmejerier4
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create-drop # Skapar och rensar databasen för varje testkörning
+    show-sql: true
