@@ -1,10 +1,18 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/test_sports_booking # Använder en separat testdatabas
+    url: jdbc:mysql://localhost:3306/test_sports_booking # Separat testdatabas
     username: root
     password: Norrmejerier4
     driver-class-name: com.mysql.cj.jdbc.Driver
+
   jpa:
     hibernate:
       ddl-auto: create-drop # Skapar och rensar databasen för varje testkörning
-    show-sql: true
+    show-sql: true          # Visar SQL-frågor i loggar
+    open-in-view: false     # Stänger av Open-In-View för att undvika ineffektivitet
+  security: { user: { name: admin, password: admin123 } }
+
+logging:
+  level:
+    org.hibernate.SQL: DEBUG # Debug-loggar för SQL-frågor
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE # Visar SQL-parametrar

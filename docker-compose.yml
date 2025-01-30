@@ -1,0 +1,33 @@
+version: '3.8'
+services:
+  mysql-db:
+    image: mysql:8.0
+    container_name: mysql-db
+    environment:
+      MYSQL_ROOT_PASSWORD: Norrmejerier4
+      MYSQL_DATABASE: test_sports_booking
+    ports:
+      - "3306:3306"
+    networks:
+      - app-network
+
+  sportsbooking-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: sportsbooking-container
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/test_sports_booking
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: Norrmejerier4
+    depends_on:
+      - mysql-db
+    command: >
+      sh -c "until nc -z mysql-db 3306; do echo Waiting for MySQL...; sleep 3; done && java -jar /app/app.jar"
+    networks:
+      - app-network
+
+networks:
+  app-network:

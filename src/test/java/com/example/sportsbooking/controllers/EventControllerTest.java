@@ -20,9 +20,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-
 @Import(TestSecurityConfig.class)
-
 @WebMvcTest(EventController.class)
 public class EventControllerTest {
 
@@ -33,7 +31,8 @@ public class EventControllerTest {
     private EventService eventService;
 
     @Test
-    public void testGetAllEvents() throws Exception {
+    public void shouldReturnAllEventsWhenRequested() throws Exception {
+        // Given: Ett evenemang finns i systemet
         Event event = new Event();
         event.setId(1L);
         event.setName("Football Match");
@@ -43,7 +42,9 @@ public class EventControllerTest {
 
         Mockito.when(eventService.getAllEvents()).thenReturn(Collections.singletonList(event));
 
+        // When: En GET-begäran skickas till /api/events
         mockMvc.perform(get("/api/events"))
+                // Then: En lista med evenemang returneras med status 200 OK
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].id").value(1L))
                 .andExpect(jsonPath("$[0].name").value("Football Match"))
@@ -53,7 +54,8 @@ public class EventControllerTest {
     }
 
     @Test
-    public void testCreateEvent() throws Exception {
+    public void shouldCreateEventWhenValidRequestIsProvided() throws Exception {
+        // Given: Ett giltigt evenemangsobjekt
         Event event = new Event();
         event.setId(1L);
         event.setName("Football Match");
@@ -63,9 +65,11 @@ public class EventControllerTest {
 
         Mockito.when(eventService.createEvent(any(Event.class))).thenReturn(event);
 
+        // When: En POST-begäran skickas till /api/events
         mockMvc.perform(post("/api/events")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"name\":\"Football Match\",\"location\":\"Stadium A\",\"date\":\"2025-05-15\",\"availableSeats\":100}"))
+                // Then: Evenemanget skapas och returnerar status 201 Created med korrekt data
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").value(1L))
                 .andExpect(jsonPath("$.name").value("Football Match"))
@@ -75,7 +79,8 @@ public class EventControllerTest {
     }
 
     @Test
-    public void testGetEventById() throws Exception {
+    public void shouldReturnEventByIdWhenValidIdIsProvided() throws Exception {
+        // Given: Ett evenemang med ID 1 finns i systemet
         Event event = new Event();
         event.setId(1L);
         event.setName("Football Match");
@@ -85,7 +90,9 @@ public class EventControllerTest {
 
         Mockito.when(eventService.getEventById(eq(1L))).thenReturn(event);
 
+        // When: En GET-begäran skickas till /api/events/1
         mockMvc.perform(get("/api/events/1"))
+                // Then: Evenemanget returneras med status 200 OK och korrekt data
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1L))
                 .andExpect(jsonPath("$.name").value("Football Match"))
@@ -95,7 +102,8 @@ public class EventControllerTest {
     }
 
     @Test
-    public void testUpdateEvent() throws Exception {
+    public void shouldUpdateEventWhenValidRequestIsProvided() throws Exception {
+        // Given: Ett uppdaterat evenemangsobjekt
         Event updatedEvent = new Event();
         updatedEvent.setId(1L);
         updatedEvent.setName("Updated Event");
@@ -105,9 +113,11 @@ public class EventControllerTest {
 
         Mockito.when(eventService.updateEvent(eq(1L), any(Event.class))).thenReturn(updatedEvent);
 
+        // When: En PUT-begäran skickas till /api/events/1
         mockMvc.perform(put("/api/events/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"name\":\"Updated Event\",\"location\":\"Updated Location\",\"date\":\"2025-06-20\",\"availableSeats\":50}"))
+                // Then: Evenemanget uppdateras och returnerar status 200 OK
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1L))
                 .andExpect(jsonPath("$.name").value("Updated Event"))
@@ -117,10 +127,13 @@ public class EventControllerTest {
     }
 
     @Test
-    public void testDeleteEvent() throws Exception {
+    public void shouldDeleteEventWhenValidIdIsProvided() throws Exception {
+        // Given: Ett evenemang med ID 1 finns i systemet
         Mockito.doNothing().when(eventService).deleteEvent(eq(1L));
 
+        // When: En DELETE-begäran skickas till /api/events/1
         mockMvc.perform(delete("/api/events/1"))
+                // Then: Evenemanget raderas och returnerar status 204 No Content
                 .andExpect(status().isNoContent());
     }
 }

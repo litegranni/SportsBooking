@@ -22,77 +22,78 @@ public class UserRepositoryTest {
 
     @BeforeEach
     public void setUp() {
-        // Rensa databasen innan varje test för att säkerställa ett rent tillstånd
+        // Given: Databasen rensas innan varje test
         userRepository.deleteAll();
     }
 
     @Test
-    public void testSaveAndFindUser() {
-        // Skapa en ny användare
+    public void shouldSaveAndRetrieveUserSuccessfully() {
+        // Given: En ny användare skapas
         User user = new User();
         user.setUsername("testuser");
         user.setEmail("test@example.com");
         user.setPassword("password123");
 
-        // Spara användaren i databasen
+        // When: Användaren sparas i databasen
         User savedUser = userRepository.save(user);
 
-        // Kontrollera att användaren sparades korrekt
+        // Then: Användaren ska kunna hämtas från databasen med korrekt data
         assertNotNull(savedUser.getId(), "Användarens ID bör inte vara null efter sparning");
 
-        // Hämta användaren från databasen
         Optional<User> foundUser = userRepository.findById(savedUser.getId());
-
-        // Kontrollera att användaren hittades
         assertTrue(foundUser.isPresent(), "Användaren bör hittas med sitt ID");
         assertEquals("testuser", foundUser.get().getUsername());
         assertEquals("test@example.com", foundUser.get().getEmail());
     }
 
     @Test
-    public void testFindByEmail() {
-        // Skapa och spara en användare
+    public void shouldFindUserByEmail() {
+        // Given: En användare med en viss e-postadress sparas i databasen
         User user = new User();
         user.setUsername("emailuser");
         user.setEmail("email@example.com");
         user.setPassword("securepassword");
         userRepository.save(user);
 
-        // Hämta användaren via e-post
+        // When: En sökning görs efter användaren med e-postadressen
         Optional<User> foundUser = userRepository.findByEmail("email@example.com");
 
-        // Kontrollera att rätt användare hittades
+        // Then: Rätt användare returneras
         assertTrue(foundUser.isPresent(), "Användaren bör hittas med e-post");
         assertEquals("emailuser", foundUser.get().getUsername());
 
-        // Testa med en ogiltig e-postadress
+        // When: En sökning görs efter en ogiltig e-postadress
         Optional<User> notFoundUser = userRepository.findByEmail("nonexistent@example.com");
+
+        // Then: Ingen användare ska hittas
         assertFalse(notFoundUser.isPresent(), "Ingen användare bör hittas för en ogiltig e-postadress");
     }
 
     @Test
-    public void testDeleteUser() {
-        // Skapa och spara en användare
+    public void shouldDeleteUserById() {
+        // Given: En användare sparas i databasen
         User user = new User();
         user.setUsername("deleteuser");
         user.setEmail("delete@example.com");
         user.setPassword("deletepassword");
         User savedUser = userRepository.save(user);
 
-        // Radera användaren
+        // When: Användaren raderas med sitt ID
         userRepository.deleteById(savedUser.getId());
 
-        // Kontrollera att användaren inte längre finns i databasen
+        // Then: Användaren bör inte längre finnas i databasen
         Optional<User> foundUser = userRepository.findById(savedUser.getId());
         assertFalse(foundUser.isPresent(), "Användaren bör inte finnas efter radering");
     }
 
     @Test
-    public void testFindById_NotFound() {
-        // Försök att hämta en användare med ett ogiltigt ID
+    public void shouldReturnEmptyWhenUserIdNotFound() {
+        // Given: Ingen användare med det angivna ID:t finns i databasen
+
+        // When: En sökning görs med ett ogiltigt ID
         Optional<User> foundUser = userRepository.findById(999L);
 
-        // Kontrollera att ingen användare hittades
+        // Then: Ingen användare ska hittas
         assertFalse(foundUser.isPresent(), "Ingen användare bör hittas med ett ogiltigt ID");
     }
 }
