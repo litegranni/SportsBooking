@@ -12,9 +12,8 @@ import java.util.Map;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    /**
-     * Hanterar EntityNotFoundException och returnerar ett tydligt felmeddelande med HTTP-status 404.
-     */
+    //Hanterar EntityNotFoundException och returnerar ett tydligt felmeddelande med HTTP-status 404.
+
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<Map<String, Object>> handleEntityNotFoundException(EntityNotFoundException ex) {
         Map<String, Object> body = new HashMap<>();
@@ -25,9 +24,8 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
 
-    /**
-     * Hanterar IllegalArgumentException och returnerar ett tydligt felmeddelande med HTTP-status 400.
-     */
+    //Hanterar IllegalArgumentException och returnerar ett tydligt felmeddelande med HTTP-status 400.
+
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<Map<String, Object>> handleIllegalArgumentException(IllegalArgumentException ex) {
         Map<String, Object> body = new HashMap<>();
@@ -38,9 +36,8 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
 
-    /**
-     * Hanterar alla andra oväntade undantag och returnerar ett generiskt felmeddelande med HTTP-status 500.
-     */
+    //Hanterar alla andra oväntade undantag och returnerar ett generiskt felmeddelande med HTTP-status 500.
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Map<String, Object>> handleGenericException(Exception ex) {
         Map<String, Object> body = new HashMap<>();

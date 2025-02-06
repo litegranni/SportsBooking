@@ -19,15 +19,18 @@ public class Booking {
 
     private String status;
 
-    // Nytt fält för kundnamn
     private String customerName;
 
-    // Constructor without parameters
-    public Booking() {
-    }
+    // Nya fält för plats, datum och tid
+    private String location;
+    private String date;
+    private String time;
 
-    // Constructor with parameters
-    public Booking(Event event, User user, String status, String customerName) {
+    // Default-konstruktor
+    public Booking() {}
+
+    // Konstruktor med parametrar
+    public Booking(Event event, User user, String status, String customerName, String location, String date, String time) {
         if (event == null) {
             throw new IllegalArgumentException("Event cannot be null");
         }
@@ -38,9 +41,12 @@ public class Booking {
         this.user = user;
         this.status = status;
         this.customerName = customerName;
+        this.location = location;
+        this.date = date;
+        this.time = time;
     }
 
-    // Getter and Setter for 'event'
+    // Getter och Setter för 'event'
     public Event getEvent() {
         return event;
     }
@@ -52,7 +58,7 @@ public class Booking {
         this.event = event;
     }
 
-    // Getter and Setter for 'user'
+    // Getter och Setter för 'user'
     public User getUser() {
         return user;
     }
@@ -64,7 +70,7 @@ public class Booking {
         this.user = user;
     }
 
-    // Getter and Setter for 'status'
+    // Getter och Setter för 'status'
     public String getStatus() {
         return status;
     }
@@ -73,16 +79,7 @@ public class Booking {
         this.status = status;
     }
 
-    // Getter and Setter for 'id'
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    // Getter and Setter för 'customerName'
+    // Getter och Setter för 'customerName'
     public String getCustomerName() {
         return customerName;
     }
@@ -91,13 +88,58 @@ public class Booking {
         this.customerName = customerName;
     }
 
-    // Validate method to ensure critical fields are not null
+    // Getter och Setter för 'location'
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    // Getter och Setter för 'date'
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    // Getter och Setter för 'time'
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    // Getter och Setter för 'id'
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    // Validate-metod för att säkerställa att kritiska fält inte är null
     public void validate() {
         if (this.event == null) {
             throw new IllegalArgumentException("Event cannot be null");
         }
         if (this.user == null) {
             throw new IllegalArgumentException("User cannot be null");
+        }
+        if (this.location == null || this.location.isEmpty()) {
+            throw new IllegalArgumentException("Location cannot be null or empty");
+        }
+        if (this.date == null || this.date.isEmpty()) {
+            throw new IllegalArgumentException("Date cannot be null or empty");
+        }
+        if (this.time == null || this.time.isEmpty()) {
+            throw new IllegalArgumentException("Time cannot be null or empty");
         }
     }
 }

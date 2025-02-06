@@ -80,7 +80,7 @@ public class EventControllerTest {
 
     @Test
     public void shouldReturnEventByIdWhenValidIdIsProvided() throws Exception {
-        // Given: Ett evenemang med ID 1 finns i systemet
+        // Given: Ett evenemang finns i systemet
         Event event = new Event();
         event.setId(1L);
         event.setName("Football Match");
