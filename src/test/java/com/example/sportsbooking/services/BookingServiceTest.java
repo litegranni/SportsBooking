@@ -1,12 +1,13 @@
-package com.sportsbooking.services;
+package com.example.sportsbooking.services;
 
-import com.sportsbooking.models.Booking;
-import com.sportsbooking.repositories.BookingRepository;
+import com.example.sportsbooking.models.Booking;
+import com.example.sportsbooking.repositories.BookingRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Arrays;
@@ -26,6 +27,8 @@ class BookingServiceTest {
 
     @BeforeEach
     void setUp() {
+        MockitoAnnotations.openMocks(this); // Initierar mock-objekten
+
         Booking booking1 = new Booking(1L, "Tennishall", "2024-02-15", "10:00");
         Booking booking2 = new Booking(2L, "Fotbollsplan", "2024-02-16", "14:00");
 
