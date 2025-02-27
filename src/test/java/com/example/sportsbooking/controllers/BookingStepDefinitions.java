@@ -21,7 +21,6 @@ public class BookingStepDefinitions {
 
     @Given("det finns bokningar i systemet")
     public void det_finns_bokningar_i_systemet() {
-        // Skapa testdata för Event och User
         Event tennisEvent = new Event();
         tennisEvent.setId(1L);
         tennisEvent.setName("Tennismatch");
@@ -32,16 +31,18 @@ public class BookingStepDefinitions {
 
         User user = new User();
         user.setId(1L);
-        user.setName("John Doe");
+        user.setUsername("John Doe"); // Fixad metod
 
-        // Lägg till bokningar via BookingService
-        bookingService.addBooking(1L, "Tennishall", "2024-02-15", "10:00", tennisEvent.getId(), user.getId());
-        bookingService.addBooking(2L, "Fotbollsplan", "2024-02-16", "14:00", footballEvent.getId(), user.getId());
+        Booking booking1 = new Booking(tennisEvent, user, "CONFIRMED", "John Doe");
+        Booking booking2 = new Booking(footballEvent, user, "PENDING", "John Doe");
+
+        bookingService.createBooking(booking1);
+        bookingService.createBooking(booking2);
     }
 
     @When("användaren hämtar alla bokningar via API")
     public void användaren_hämtar_alla_bokningar_via_api() {
-        bookings = bookingService.getAllBookings(); // Korrekt metod från BookingService
+        bookings = bookingService.getAllBookings();
     }
 
     @Then("ska systemet returnera en lista av bokningar")

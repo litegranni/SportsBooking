@@ -1,6 +1,8 @@
 package com.example.sportsbooking.services;
 
 import com.example.sportsbooking.models.Booking;
+import com.example.sportsbooking.models.Event;
+import com.example.sportsbooking.models.User;
 import com.example.sportsbooking.repositories.BookingRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,10 +29,24 @@ class BookingServiceTest {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this); // Initierar mock-objekten
+        MockitoAnnotations.openMocks(this);
 
-        Booking booking1 = new Booking(1L, "Tennishall", "2024-02-15", "10:00");
-        Booking booking2 = new Booking(2L, "Fotbollsplan", "2024-02-16", "14:00");
+        Event event1 = new Event();
+        event1.setId(1L);
+
+        Event event2 = new Event();
+        event2.setId(2L);
+
+        User user1 = new User();
+        user1.setId(1L);
+        user1.setUsername("TestUser1");
+
+        User user2 = new User();
+        user2.setId(2L);
+        user2.setUsername("TestUser2");
+
+        Booking booking1 = new Booking(event1, user1, "CONFIRMED", "TestUser1");
+        Booking booking2 = new Booking(event2, user2, "PENDING", "TestUser2");
 
         when(bookingRepository.findAll()).thenReturn(Arrays.asList(booking1, booking2));
     }

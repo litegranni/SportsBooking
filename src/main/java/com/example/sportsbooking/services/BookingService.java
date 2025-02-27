@@ -75,6 +75,11 @@ public class BookingService {
         bookingRepository.deleteById(id);
     }
 
+    // Fixad metod: findAllBookings()
+    public List<Booking> findAllBookings() {
+        return bookingRepository.findAll();
+    }
+
     @Autowired
     private EntityManager entityManager;
 
