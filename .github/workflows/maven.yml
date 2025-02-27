@@ -1,0 +1,43 @@
+name: CI - Build & Test
+
+on:
+  push:
+    branches:
+      - main  # Kör när kod pushas till main
+  pull_request:
+    branches:
+      - main  # Kör på pull requests mot main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest  # Kör på en Linux-server i GitHub Actions
+
+    steps:
+      - name: 🛎 Check out repository
+        uses: actions/checkout@v4  # Hämtar koden från din repo
+
+      - name: ☕ Set up JDK 21
+        uses: actions/setup-java@v3
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: maven  # Automatisk caching av dependencies
+
+      - name: 🏗 Build with Maven
+        run: mvn clean compile
+
+      - name: 🧪 Run tests
+        run: mvn test --fail-at-end  # Kör tester men fortsätter även om vissa fallerar
+
+      - name: 📊 Upload test results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-results
+          path: target/surefire-reports/  # Sparar testresultaten som artifacts
+
+      - name: 🚀 Package application
+        run: mvn package -DskipTests  # Bygger .jar-filen, skippar tester
+
+      - name: ✅ Verify build success
+        run: echo "Build completed successfully!"
